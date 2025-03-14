@@ -4,13 +4,145 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Central</title>
+
+    <!-- Link para o Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* Reset básico para garantir uma aparência consistente em todos os navegadores */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* Estilo do cabeçalho */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #222;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .logo h1 {
+            color: white;
+            font-size: 24px;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 20px;
+            list-style-type: none;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            padding: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        /* Menu de navegação principal */
+        .menu {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            padding: 20px;
+        }
+
+        .menu a {
+            color: #001eff;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: 500;
+            padding: 12px 18px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .menu a:hover {
+            background-color: #007bff;
+            transform: translateY(-2px);
+        }
+
+        .menu a i {
+            margin-right: 10px;
+        }
+
+        /* Estilo para telas pequenas */
+        @media (max-width: 768px) {
+            .menu {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .menu a {
+                width: 100%;
+                text-align: center;
+                padding: 15px;
+                font-size: 16px;
+            }
+
+            h1 {
+                font-size: 28px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 
-<style></style>
-
 <body>
-    
-<h2>Central</h2>
+    <header>
+        <div class="logo">
+            <img class="imgcub" src="image/programar-logo.png" alt="Central de Projetos">
+            <h1>Central de Navegação</h1>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#contato">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+   
+    <nav>
+        <div class="menu">
+            <a href="chat.html"><i class="fas fa-comment"></i> Chat Message</a>
+            <a href="tests/3D Simulator.html"><i class="fas fa-cogs"></i> 3D Test</a>
+            <a href="tests/clone.html"><i class="fas fa-clone"></i> Clone HTML</a>
+        </div>
+    </nav>
 
 </body>
 </html>

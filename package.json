@@ -1,0 +1,15 @@
+{
+    "name": "sistema",
+    "version": "1.0.0",
+    "main": "bankend/server.js",
+    "scripts": {
+      "start": "node bankend/server.js",
+      "build": "echo 'No build step required'",
+      "test": "echo 'No tests specified' && exit 0"
+    },
+    "dependencies": {
+      "express": "^4.17.1",
+      "socket.io": "^4.0.0"
+    }
+  }
+  
