@@ -1,0 +1,84 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+}
+
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+}
+
+input, textarea {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #218838;
+}
+@media print {
+    @page {
+        size: A4;
+        margin: 20mm; /* Ajuste a margem conforme necessário */
+    }
+
+    body {
+        width: 210mm; /* Largura A4 */
+        height: 297mm; /* Altura A4 */
+        margin: 0; /* Remove margens padrão */
+        padding: 20mm; /* Padding interno */
+        box-sizing: border-box; /* Inclui padding nas dimensões */
+    }
+
+    h1, h2, h3 {
+        page-break-after: avoid; /* Evita quebra de página após títulos */
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+
+    th, td {
+        padding: 10px;
+        border: 1px solid #ccc; /* Bordas da tabela */
+        text-align: left;
+    }
+
+    th {
+        background-color: #007BFF;
+        color: white;
+    }
+
+    /* Escondendo elementos que não devem aparecer na impressão */
+    .no-print {
+        display: none;
+    }
+}

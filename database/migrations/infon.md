@@ -1,0 +1,1 @@
+-- migrations/ # Scripts de criação e alteração de tabelas

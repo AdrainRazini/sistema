@@ -1,0 +1,1 @@
+-- middleware/ # Middlewares (autenticação, logs, etc.)

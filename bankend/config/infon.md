@@ -1,0 +1,1 @@
+-- config/# Configurações (banco, variáveis de ambiente)

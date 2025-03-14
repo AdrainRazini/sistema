@@ -1,0 +1,207 @@
+<!--  Sistema de simulação 3D de Ocupação Caminhão 🚛 -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulação de Ocupação 3D</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+        .controls {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 5px;
+            font-family: Arial, sans-serif;
+        }
+        .controls input, .controls button, .controls select {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="controls">
+    <label>Caminhão: 
+        <select id="caminhao" onchange="mudarCaminhao(true)">
+            <option value="pequeno">Pequeno (50x20x20)</option>
+            <option value="medio">Médio (70x30x30)</option>
+            <option value="grande">Grande (100x40x40)</option>
+        </select>
+    </label><br>
+    <label>Altura da caixa: <input type="number" id="altura" value="5" min="1"></label><br>
+    <label>Largura da caixa: <input type="number" id="largura" value="5" min="1"></label><br>
+    <label>Profundidade da caixa: <input type="number" id="profundidade" value="5" min="1"></label><br>
+    <button onclick="adicionarCaixa()">Adicionar Caixa</button>
+    <button onclick="removerCaixa()">Remover Caixa</button>
+    <br>
+    <button onclick="selecionarCaixa()">Selecionar Caixa</button>
+    <button onclick="moverCaixa()">Mover Caixa</button>
+    <button onclick="ajustarDimensoes()">Ajustar Dimensões</button>
+</div>
+
+<script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    let caminhao, caminhaoDimensoes = { largura: 50, altura: 20, profundidade: 20 };
+    let caixas = [];
+    let ocupacao = [];
+    let caixaSelecionada = null;
+    let raycaster = new THREE.Raycaster();
+    let mouse = new THREE.Vector2();
+    
+    function criarCaminhao(reajustarCaixas = false) {
+        if (caminhao) scene.remove(caminhao);
+        caminhao = new THREE.Mesh(
+            new THREE.BoxGeometry(caminhaoDimensoes.largura, caminhaoDimensoes.altura, caminhaoDimensoes.profundidade),
+            new THREE.MeshBasicMaterial({ color: 0x5555ff, wireframe: true })
+        );
+        caminhao.position.set(0, caminhaoDimensoes.altura / 2, 0);
+        scene.add(caminhao);
+        if (reajustarCaixas) realocarCaixas();
+    }
+
+    function mudarCaminhao(reajustarCaixas = false) {
+        const tipo = document.getElementById('caminhao').value;
+        if (tipo === "pequeno") caminhaoDimensoes = { largura: 50, altura: 20, profundidade: 20 };
+        if (tipo === "medio") caminhaoDimensoes = { largura: 70, altura: 30, profundidade: 30 };
+        if (tipo === "grande") caminhaoDimensoes = { largura: 100, altura: 40, profundidade: 40 };
+        criarCaminhao(reajustarCaixas);
+    }
+
+    function realocarCaixas() {
+        ocupacao = [];
+        caixas.forEach(caixa => {
+            let novaPosicao = encontrarEspacoDisponivel(caixa.geometry.parameters.width, caixa.geometry.parameters.height, caixa.geometry.parameters.depth);
+            if (novaPosicao) {
+                caixa.position.set(novaPosicao.x + caixa.geometry.parameters.width / 2, novaPosicao.y + caixa.geometry.parameters.height / 2, novaPosicao.z + caixa.geometry.parameters.depth / 2);
+                ocupacao.push({ ...novaPosicao, largura: caixa.geometry.parameters.width, altura: caixa.geometry.parameters.height, profundidade: caixa.geometry.parameters.depth });
+            } else {
+                scene.remove(caixa);
+            }
+        });
+    }
+
+    function encontrarEspacoDisponivel(largura, altura, profundidade) {
+        for (let y = 0; y + altura <= caminhaoDimensoes.altura; y += altura) {
+            for (let z = -caminhaoDimensoes.profundidade / 2; z + profundidade <= caminhaoDimensoes.profundidade / 2; z += profundidade) {
+                for (let x = -caminhaoDimensoes.largura / 2; x + largura <= caminhaoDimensoes.largura / 2; x += largura) {
+                    let ocupado = ocupacao.some(c => 
+                        x < c.x + c.largura && x + largura > c.x &&
+                        y < c.y + c.altura && y + altura > c.y &&
+                        z < c.z + c.profundidade && z + profundidade > c.z
+                    );
+                    if (!ocupado) return { x, y, z };
+                }
+            }
+        }
+        return null;
+    }
+
+    function adicionarCaixa() {
+        const largura = parseFloat(document.getElementById('largura').value);
+        const altura = parseFloat(document.getElementById('altura').value);
+        const profundidade = parseFloat(document.getElementById('profundidade').value);
+        let posicao = encontrarEspacoDisponivel(largura, altura, profundidade);
+        if (!posicao) {
+            alert("Sem espaço!");
+            return;
+        }
+        const caixa = new THREE.Mesh(new THREE.BoxGeometry(largura, altura, profundidade), new THREE.MeshBasicMaterial({ color: Math.random() * 0xffffff }));
+        caixa.position.set(posicao.x + largura / 2, posicao.y + altura / 2, posicao.z + profundidade / 2);
+        scene.add(caixa);
+        caixas.push(caixa);
+        ocupacao.push({ ...posicao, largura, altura, profundidade });
+    }
+
+    function removerCaixa() {
+        if (caixas.length > 0) {
+            const caixa = caixas.pop();
+            scene.remove(caixa);
+            ocupacao.pop();
+        }
+    }
+
+    function selecionarCaixa() {
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(caixas);
+        if (intersects.length > 0) {
+            caixaSelecionada = intersects[0].object;
+            alert('Caixa selecionada!');
+        } else {
+            alert('Nenhuma caixa selecionada!');
+        }
+    }
+
+    function moverCaixa() {
+        if (caixaSelecionada) {
+            raycaster.setFromCamera(mouse, camera);
+            const plane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+            const target = new THREE.Vector3();
+            raycaster.ray.intersectPlane(plane, target);
+            caixaSelecionada.position.x = target.x;
+            caixaSelecionada.position.z = target.z;
+        } else {
+            alert('Selecione uma caixa primeiro!');
+        }
+    }
+
+    function ajustarDimensoes() {
+        if (caixaSelecionada) {
+            const novaLargura = parseFloat(document.getElementById('largura').value);
+            const novaAltura = parseFloat(document.getElementById('altura').value);
+            const novaProfundidade = parseFloat(document.getElementById('profundidade').value);
+            caixaSelecionada.scale.set(novaLargura / caixaSelecionada.geometry.parameters.width, novaAltura / caixaSelecionada.geometry.parameters.height, novaProfundidade / caixaSelecionada.geometry.parameters.depth);
+            caixaSelecionada.geometry = new THREE.BoxGeometry(novaLargura, novaAltura, novaProfundidade);
+        } else {
+            alert('Selecione uma caixa primeiro!');
+        }
+    }
+
+    function onMouseMove(event) {
+        event.preventDefault();
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    }
+
+    function onMouseDown(event) {
+        raycaster.setFromCamera(mouse, camera);
+        const intersects = raycaster.intersectObjects(caixas);
+        if (intersects.length > 0) {
+            caixaSelecionada = intersects[0].object;
+        }
+    }
+
+    function onMouseUp(event) {
+        caixaSelecionada = null;
+    }
+
+    window.addEventListener('mousemove', onMouseMove, false);
+    window.addEventListener('mousedown', onMouseDown, false);
+    window.addEventListener('mouseup', onMouseUp, false);
+
+    mudarCaminhao();
+    camera.position.set(0, 50, 100);
+
+    function animate() {
+        requestAnimationFrame(animate);
+        controls.update();
+        renderer.render(scene, camera);
+    }
+
+    animate();
+</script>
+
+</body>
+</html>

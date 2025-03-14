@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Item</title>
+    
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        h1, h3 {
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"], input[type="number"], textarea, select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            margin-top: 10px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #5cb85c;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #4cae4c;
+        }
+        .item {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="bg-fixed">
+    <h1>Adicionar Novo Item</h1>
+    <form id="form-adicionar">
+        <label>Nome Transportadora:</label>
+        <input type="text" name="transportadora_nome" value="TRANSCOTEMPO LTDA" readonly required>
+        
+        <label>CNPJ:</label>
+        <input type="text" name="transportadora_cnpj" value="36600687000143" readonly required>
+        
+        <h3>Dados do Cliente</h3>
+        <label>Nome:</label>
+        <input type="text" name="cliente_nome" required>
+        
+        <label>Telefone:</label>
+        <input type="text" name="cliente_telefone" required>
+        
+        <h3>Endereço de Origem</h3>
+        <label>Endereço:</label>
+        <input type="text" name="endereco_origem" required>
+        
+        <label>Bairro:</label>
+        <input type="text" name="bairro_origem" required>
+        
+        <label>Cidade:</label>
+        <input type="text" name="cidade_origem" required>
+        
+        <label>UF:</label>
+        <input type="text" name="uf_origem" required>
+        
+        <h3>Endereço de Destino</h3>
+        <label>Endereço:</label>
+        <input type="text" name="endereco_destino" required>
+        
+        <label>Bairro:</label>
+        <input type="text" name="bairro_destino" required>
+        
+        <label>Cidade:</label>
+        <input type="text" name="cidade_destino" required>
+        
+        <label>UF:</label>
+        <input type="text" name="uf_destino" required>
+
+        <h3>Itens de Mobiliário</h3>
+        <div id="itens-container">
+            <div class="item">
+                <label>Categoria:</label>
+                <select name="movel_categoria[]" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="ESTAR E JANTAR">ESTAR E JANTAR</option>
+                    <option value="DORMITÓRIO">DORMITÓRIO</option>
+                    <option value="ESCRITÓRIO">ESCRITÓRIO</option>
+                    <option value="COZINHA / ÁREA">COZINHA / ÁREA</option>
+                    <option value="DIVERSOS">DIVERSOS</option>
+                    <option value="VEÍCULOS">VEÍCULOS</option>
+                </select>
+                
+                <label>Descrição do Móvel:</label>
+                <select name="movel_descricao[]" required>
+                    <option value="">Selecione uma descrição</option>
+                </select>
+                
+                <label>Quantidade:</label>
+                <input type="number" name="movel_quantidade[]" required>
+                
+                <label>Valor (R$):</label>
+                <input type="text" name="movel_valor[]" required oninput="formatarValor(this)" placeholder="R$ 0,00">
+                
+                <button type="button" class="remover-item">Remover</button>
+            </div>
+        </div>
+        
+        <button type="button" id="adicionar-item">Adicionar Móvel</button>
+
+        <label>Valor Total Declarado (R$):</label>
+        <input type="text" id="valor_total_declarado" name="valor_total_declarado" required readonly>
+        
+        <label>Observação:</label>
+        <textarea name="observacao"></textarea>
+        
+        <button type="submit">Adicionar</button>
+    </form>
+
+    <script>
+        const descricoesPorCategoria = {
+            "ESTAR E JANTAR": ["Abajour", "Aparelho Som", "Ar Condicionado", "Arranjos Ornamentais", "Banco Piano", "Banqueta", "Bar", "Biombo", "Buffet Pequeno", "Buffet Grande", "Buffet c/ Cristal", "CD", "Cadeira Balanço", "Cadeira de Braço", "Cadeira de Criança", "Cadeira Simples", "Caixa de Som Peq", "Caixa de Som Gde", "Carrinho de Chá", "Console", "Cristaleira", "Discos", "DVD Player", "DVD", "Espelhos", "Estante Alta", "Estante Baixa", "Lustre", "Mármore/Granito", "Mesa de Centro", "Mesa Dobrável", "Mesa Elástica", "Mesa Jantar", "Mesa Lateral", "Mesa de Telefone", "Mesa TV", "Piano", "Poltrona", "Rack", "Rádio", "Relógio de Parede", "Sofá c/ 2 Almofadas", "Sofá c/ 3 Almofadas", "Sofá c/ 4 Almofadas", "Tapete Pequeno", "Tapete Grande", "TV Preto e Branco", "TV a Cores", "Vídeo Cassete", "Vidro Mesa"],
+            "DORMITÓRIO": ["Ar Condicionado", "Armário 2 Portas", "Armário 3 Portas", "Armário 4 Portas", "Armário Duplex", "Cama Beliche", "Cama Berço", "Cama Casal", "Cama Criança", "Cama Solteiro", "Cama Dobrável", "Colchão Berço", "Colchão Casal", "Colchão Solteiro", "Cômoda Penteadeira"],
+            "ESCRITÓRIO": ["Armário de Aço", "Arquivo", "Cadeira Estofada", "Calculadora Manual", "Calculadora Elétrica", "Calculadora Eletrônica", "Computador", "Escrivaninha Grande", "Escrivaninha Pequena", "Escrivaninha em L", "Impressora", "Máquina de Escrever", "Máquina Elétrica", "Monitor"],
+            "COZINHA / ÁREA": ["Ar Condicionado", "Aquecedor", "Balança", "Bebidas Lacradas", "Bicicleta", "Botijão de Gás", "Batedeira", "Cortinas", "Fogão", "Freezer", "Geladeira", "Lava-Louças", "Lava-Roupas", "Liquidificador", "Microondas", "Secadora", "Espremer", "Louças", "Filtro", "Pratos", "Objetos de Uso Pessoal"],
+            "DIVERSOS": ["Carrinho Bebê", "Cesto p/ Roupas", "Discos", "Esculturas", "Ferramentas", "Instrumentos Musicais", "Livros", "Outros (Especificar Abaixo)"],
+            "VEÍCULOS": ["Automóvel", "Moto"]
+        };
+
+        function atualizarDescricoes(categoriaSelect, descricaoSelect) {
+            const categoria = categoriaSelect.value;
+            descricaoSelect.innerHTML = '<option value="">Selecione uma descrição</option>';
+            if (categoria in descricoesPorCategoria) {
+                descricoesPorCategoria[categoria].forEach(descricao => {
+                    descricaoSelect.innerHTML += `<option value="${descricao}">${descricao}</option>`;
+                });
+            }
+        }
+
+        function calcularValorTotal() {
+            const valores = document.querySelectorAll('input[name="movel_valor[]"]');
+            let total = 0;
+
+            valores.forEach(valor => {
+                const valorFormatado = valor.value.replace(/\./g, '').replace(',', '.'); // Formata o valor para cálculo
+                const valorNumerico = parseFloat(valorFormatado);
+                if (!isNaN(valorNumerico)) {
+                    total += valorNumerico;
+                }
+            });
+
+            document.getElementById('valor_total_declarado').value = total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function formatarValor(input) {
+            // Permite apenas números, vírgulas e pontos
+            const valor = input.value.replace(/[^0-9.,]/g, ''); // Remove caracteres inválidos
+            const regex = /^(\d+)([.,]\d{0,2})?$/; // Regex para no máximo duas casas decimais
+            const match = valor.match(regex);
+            
+            if (match) {
+                input.value = match[0].replace('.', ','); // Retorna ao formato brasileiro
+            } else {
+                input.value = ''; // Limpa o campo se não for um valor válido
+            }
+            calcularValorTotal();
+        }
+
+        document.getElementById('adicionar-item').onclick = function() {
+            const container = document.getElementById('itens-container');
+            const newItem = document.createElement('div');
+            newItem.className = 'item';
+            newItem.innerHTML = `
+                <label>Categoria:</label>
+                <select name="movel_categoria[]" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="ESTAR E JANTAR">ESTAR E JANTAR</option>
+                    <option value="DORMITÓRIO">DORMITÓRIO</option>
+                    <option value="ESCRITÓRIO">ESCRITÓRIO</option>
+                    <option value="COZINHA / ÁREA">COZINHA / ÁREA</option>
+                    <option value="DIVERSOS">DIVERSOS</option>
+                    <option value="VEÍCULOS">VEÍCULOS</option>
+                </select>
+                
+                <label>Descrição do Móvel:</label>
+                <select name="movel_descricao[]" required>
+                    <option value="">Selecione uma descrição</option>
+                </select>
+                
+                <label>Quantidade:</label>
+                <input type="number" name="movel_quantidade[]" required>
+                
+                <label>Valor (R$):</label>
+                <input type="text" name="movel_valor[]" required oninput="formatarValor(this)" placeholder="R$ 0,00">
+                
+                <button type="button" class="remover-item">Remover</button>
+            `;
+            container.appendChild(newItem);
+
+            const categoriaSelect = newItem.querySelector('select[name="movel_categoria[]"]');
+            const descricaoSelect = newItem.querySelector('select[name="movel_descricao[]"]');
+
+            categoriaSelect.onchange = function() {
+                atualizarDescricoes(categoriaSelect, descricaoSelect);
+            };
+
+            newItem.querySelector('.remover-item').onclick = function() {
+                container.removeChild(newItem);
+                calcularValorTotal(); // Atualiza o total após remover um item
+            };
+        };
+
+        // Inicializa o primeiro item
+        const firstCategoriaSelect = document.querySelector('select[name="movel_categoria[]"]');
+        const firstDescricaoSelect = document.querySelector('select[name="movel_descricao[]"]');
+        firstCategoriaSelect.onchange = function() {
+            atualizarDescricoes(firstCategoriaSelect, firstDescricaoSelect);
+        };
+
+        document.getElementById('form-adicionar').onsubmit = async function(event) {
+            event.preventDefault();
+            const loadingMessage = document.createElement('div');
+            loadingMessage.textContent = 'Adicionando item...';
+            document.body.appendChild(loadingMessage);
+
+            const formData = new FormData(event.target);
+            const data = {
+                transportadora: {
+                    nome: formData.get('transportadora_nome'),
+                    cnpj: formData.get('transportadora_cnpj'),
+                },
+                cliente: {
+                    nome: formData.get('cliente_nome'),
+                    telefone: formData.get('cliente_telefone'),
+                    endereco_origem: {
+                        endereco: formData.get('endereco_origem'),
+                        bairro: formData.get('bairro_origem'),
+                        cidade: formData.get('cidade_origem'),
+                        uf: formData.get('uf_origem'),
+                    },
+                    endereco_destino: {
+                        endereco: formData.get('endereco_destino'),
+                        bairro: formData.get('bairro_destino'),
+                        cidade: formData.get('cidade_destino'),
+                        uf: formData.get('uf_destino'),
+                    }
+                },
+                itens: Array.from(formData.getAll('movel_descricao[]')).map((descricao, i) => ({
+                    categoria: formData.getAll('movel_categoria[]')[i],
+                    descricao,
+                    quantidade: parseInt(formData.getAll('movel_quantidade[]')[i]),
+                    valor: parseFloat(formData.getAll('movel_valor[]')[i].replace(/\./g, '').replace(',', '.'))
+                })),
+                valor_total_declarado: parseFloat(formData.get('valor_total_declarado').replace(/\./g, '').replace(',', '.')),
+                observacao: formData.get('observacao'),
+                data_local: new Date().toISOString(),
+                assinaturas: {
+                    transportador: "",
+                    cliente: ""
+                }
+            };
+
+            try {
+                const response = await fetch('/adicionar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                loadingMessage.remove();
+                if (!response.ok) throw new Error('Erro ao adicionar item.');
+                const responseData = await response.json();
+                alert('Item adicionado com sucesso: ' + JSON.stringify(responseData));
+                event.target.reset(); // Limpa os campos principais do formulário
+                document.getElementById('itens-container').innerHTML = ''; // Limpa os itens adicionados
+                // Re-adiciona o primeiro item
+                document.getElementById('adicionar-item').click(); 
+            } catch (error) {
+                loadingMessage.remove();
+                alert('Erro: ' + error.message);
+            }
+        };
+    </script>
+</body>
+</html>

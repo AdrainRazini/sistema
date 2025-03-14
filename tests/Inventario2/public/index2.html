@@ -1,0 +1,90 @@
+<table id="tabela" border="1"></table>
+
+<script>
+    const tabela = document.querySelector("#tabela");
+
+    // Exemplo de array de itens com categorias
+    const itens = [
+        { descricao: "Mesa", quantidade: 2, valor: 500, categoria: "ESTAR E JANTAR" },
+        { descricao: "Cadeira", quantidade: 4, valor: 150, categoria: "ESTAR E JANTAR" },
+        { descricao: "Sofá", quantidade: 1, valor: 1200, categoria: "ESTAR E JANTAR" },
+        { descricao: "Cama", quantidade: 1, valor: 2000, categoria: "DORMITÓRIO" },
+        { descricao: "Guarda-roupa", quantidade: 1, valor: 2500, categoria: "DORMITÓRIO" },
+        { descricao: "Escrivaninha", quantidade: 1, valor: 900, categoria: "ESCRITÓRIO" },
+        { descricao: "Cadeira de Escritório", quantidade: 1, valor: 600, categoria: "ESCRITÓRIO" }
+    ];
+
+    // Organizando os itens por categoria
+    const categorias = { "ESTAR E JANTAR": [], "DORMITÓRIO": [], "ESCRITÓRIO": [] };
+    itens.forEach(item => {
+        categorias[item.categoria].push(item);
+    });
+
+    // Criando o cabeçalho da tabela
+    let cabecalho = document.createElement("thead");
+    cabecalho.innerHTML = `
+        <tr>
+            <th>QTD.</th>
+            <th>DESCRIÇÃO</th>
+            <th>EP*</th>
+            <th>VALOR R$</th>
+            <th>QTD.</th>
+            <th>DESCRIÇÃO</th>
+            <th>EP*</th>
+            <th>VALOR R$</th>
+            <th>QTD.</th>
+            <th>DESCRIÇÃO</th>
+            <th>EP*</th>
+            <th>VALOR R$</th>
+        </tr>
+        <tr>
+            <th colspan="4">ESTAR E JANTAR</th>
+            <th colspan="4">DORMITÓRIO</th>
+            <th colspan="4">ESCRITÓRIO</th>
+        </tr>
+    `;
+    tabela.appendChild(cabecalho);
+
+    // Criando o corpo da tabela
+    const corpoTabela = document.createElement("tbody");
+    let linhaCount = 1;
+    let estarIndex = 1, dormitorioIndex = 1, escritorioIndex = 1;
+
+    for (let i = 1; i <= 56; i++) {
+        let linha = document.createElement("tr");
+
+        // Preenchendo as células da categoria "ESTAR E JANTAR"
+        if (categorias["ESTAR E JANTAR"].length > 0) {
+            let item = categorias["ESTAR E JANTAR"].shift(); // Pega o próximo item da categoria
+            linha.innerHTML += `
+                <td>${estarIndex++}</td><td>${item.descricao}</td><td></td><td>R$${item.valor}</td>
+            `;
+        } else {
+            linha.innerHTML += `<td>${estarIndex++}</td><td></td><td></td><td></td>`;
+        }
+
+        // Preenchendo as células da categoria "DORMITÓRIO"
+        if (categorias["DORMITÓRIO"].length > 0) {
+            let item = categorias["DORMITÓRIO"].shift(); // Pega o próximo item da categoria
+            linha.innerHTML += `
+                <td>${dormitorioIndex++}</td><td>${item.descricao}</td><td></td><td>R$${item.valor}</td>
+            `;
+        } else {
+            linha.innerHTML += `<td>${dormitorioIndex++}</td><td></td><td></td><td></td>`;
+        }
+
+        // Preenchendo as células da categoria "ESCRITÓRIO"
+        if (categorias["ESCRITÓRIO"].length > 0) {
+            let item = categorias["ESCRITÓRIO"].shift(); // Pega o próximo item da categoria
+            linha.innerHTML += `
+                <td>${escritorioIndex++}</td><td>${item.descricao}</td><td></td><td>R$${item.valor}</td>
+            `;
+        } else {
+            linha.innerHTML += `<td>${escritorioIndex++}</td><td></td><td></td><td></td>`;
+        }
+
+        corpoTabela.appendChild(linha);
+    }
+
+    tabela.appendChild(corpoTabela);
+</script>

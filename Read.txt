@@ -1,0 +1,39 @@
+meu-site/
+|
+|-- backend/                  # Código do servidor e lógica de negócios
+|   |-- controllers/          # Controladores (regras de negócio)
+|   |-- models/               # Modelos do banco de dados
+|   |-- routes/               # Rotas da API
+|   |-- middleware/           # Middlewares (autenticação, logs, etc.)
+|   |-- config/               # Configurações (banco, variáveis de ambiente)
+|   |-- tests/                # Testes do backend
+|   |-- server.js             # Arquivo principal do servidor
+|
+|-- frontend/                 # Interface do usuário (HTML, CSS, JS)
+|   |-- public/               # Arquivos públicos (imagens, fontes, ícones)
+|   |-- src/                  # Código-fonte do frontend
+|   |   |-- components/       # Componentes reutilizáveis
+|   |   |-- pages/            # Páginas do site
+|   |   |-- assets/           # Arquivos de mídia e estilos
+|   |   |-- utils/            # Funções utilitárias
+|   |-- index.html            # Página inicial
+|   |-- app.js                # Lógica principal do frontend
+|   |-- styles.css            # Estilos globais
+|
+|-- database/                 # Banco de dados e scripts
+|   |-- migrations/           # Scripts de criação e alteração de tabelas
+|   |-- seeders/              # Dados iniciais do banco
+|   |-- database.sqlite       # Banco local (se for SQLite)
+|
+|-- docs/                     # Documentação do projeto
+|   |-- API.md                # Documentação da API
+|   |-- README.md             # Instruções gerais
+|
+|-- scripts/                  # Scripts úteis (deploy, backup, etc.)
+|
+|-- tests/                    # Testes automatizados gerais
+|
+|-- .env                      # Variáveis de ambiente
+|-- .gitignore                # Arquivos a serem ignorados pelo Git
+|-- package.json              # Dependências do projeto
+|-- package-lock.json         # Versão fixa das dependências

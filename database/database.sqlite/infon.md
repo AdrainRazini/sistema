@@ -1,0 +1,1 @@
+-- database.sqlite  # Banco local (se for SQLite)

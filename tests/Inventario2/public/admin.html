@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Administração do Inventário</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Estilos mantidos... */
+    </style>
+</head>
+<body>
+    <h1>Gerenciar Inventário</h1>
+    <table id="inventario-tabela">
+        <thead>
+            <tr>
+                <th>Transportadora</th>
+                <th>CNPJ</th>
+                <th>Cliente</th>
+                <th>Telefone</th>
+                <th>Endereço Origem</th>
+                <th>Endereço Destino</th>
+                <th>Valor Total</th>
+                <th>Data</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os dados do inventário serão inseridos aqui -->
+        </tbody>
+    </table>
+    <div id="message" class="message" style="display:none;"></div>
+    
+    <script>
+        // Carregar dados do inventário
+        fetch('/inventario')
+            .then(response => response.json())
+            .then(data => {
+                const tabela = document.getElementById('inventario-tabela').getElementsByTagName('tbody')[0];
+                data.forEach(item => {
+                    const row = tabela.insertRow();
+                    row.innerHTML = `
+                        <td>${item.transportadora.nome}</td>
+                        <td>${item.transportadora.cnpj}</td>
+                        <td>${item.cliente.nome}</td>
+                        <td>${item.cliente.telefone}</td>
+                        <td>${item.cliente.endereco_origem.endereco}, ${item.cliente.endereco_origem.bairro}, ${item.cliente.endereco_origem.cidade} - ${item.cliente.endereco_origem.uf}</td>
+                        <td>${item.cliente.endereco_destino.endereco}, ${item.cliente.endereco_destino.bairro}, ${item.cliente.endereco_destino.cidade} - ${item.cliente.endereco_destino.uf}</td>
+                        <td>R$ ${item.valor_total_declarado.toFixed(0)}</td>
+                        <td>${item.data_local.split('T')[0]}</td>
+                        <td>
+                            <button onclick="deletarItem(${item.id})">Deletar</button>
+                        </td>
+                    `;
+                });
+            });
+
+        // Deletar item do inventário
+        function deletarItem(id) {
+            if (confirm('Tem certeza que deseja deletar este item?')) {
+                fetch(`/deletar/${id}`, { method: 'DELETE' })
+                    .then(response => {
+                        if (response.ok) {
+                            mostrarMensagem('Item deletado com sucesso!', true);
+                            window.location.reload();
+                        } else {
+                            mostrarMensagem('Erro ao deletar item. Tente novamente.', false);
+                        }
+                    });
+            }
+        }
+
+        // Exibir mensagens de sucesso ou erro
+        function mostrarMensagem(texto, sucesso) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.textContent = texto;
+            messageDiv.style.color = sucesso ? '#28a745' : '#dc3545';
+            messageDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>

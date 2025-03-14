@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Documento</title>
+</head>
+    <style>
+@media print {
+    /* Remove margens automáticas da página ao imprimir */
+    @page {
+        margin: 0;
+    }
+
+    /* Ajusta margens do corpo para manter o conteúdo visível */
+    body {
+        margin: 1cm;
+    }
+
+    /* Oculta elementos indesejados como cabeçalhos e rodapés gerados pelo navegador */
+    header, footer, back-button {
+        display: none;
+    }
+}
+</style>
+
+<body>
+    <div class="info" id="item-info">
+        <h2>Carregando detalhes...</h2>
+    </div>
+    
+    <a class="back-button" href="index.html">Voltar</a>
+
+    <div class="printable" id="printable-area"></div>
+
+    <script>
+        function getQueryParameter(name) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(name);
+        }
+
+        const itemId = parseInt(getQueryParameter('itemId'));
+
+        if (isNaN(itemId)) {
+            document.getElementById('item-info').innerHTML = `<h2>ID do item não fornecido.</h2>`;
+        } else {
+            fetch('/inventario')
+                .then(response => {
+                    if (!response.ok) throw new Error('Erro na resposta da rede');
+                    return response.json();
+                })
+                .then(data => {
+                    const item = data.find(i => i.id === itemId);
+    
+                    if (item) {
+                        const infoDiv = document.getElementById('item-info');
+                        infoDiv.innerHTML = `<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Ver.css">
+    <title>Inventário de Mudança</title>
+
+</head>
+<body>
+
+        <h1>Inventário de Mudança</h1>
+     
+
+       
+            <label class="h2">Dados da Transportadora</label>
+       
+        <div class="label-group">
+            
+            <div>
+                <label>NOME: TRANSCOTEMPO LTDA</label>
+               
+            </div>
+            <div>
+                <label style="text-align: end;" >CNPJ: 36.600.687/0001-43</label>
+                
+            </div>
+        </div>
+    </div>
+ 
+    <!-- Dados do Cliente -->
+    <div class="section">
+       <label class="h2">Dados do Cliente</label>
+        <div class="label-group">
+            <div>
+                <label>Nome: ${item.cliente.nome || "Não disponível"}</label>
+            
+            </div>
+            <div>
+                <label style="text-align: end;">Telefone: ${item.cliente.telefone || "Não disponível"}</label>
+              
+            </div>
+        </div>
+        <div class="label-group">
+            <div>
+                <label>Endereço de Origem: ${item.cliente.endereco_origem.endereco || "Não disponível"}</label>
+             
+            </div>
+            <div>
+                <label>Bairro: ${item.cliente.endereco_origem.bairro || "Não disponível"}</label>
+              
+            </div>
+            <div>
+                <label>Cidade: ${item.cliente.endereco_origem.cidade || "Não disponível"}</label>
+               
+            </div>
+            <div>
+                <label>UF: ${item.cliente.endereco_origem.uf || "Não disponível"}</label>
+              
+            </div>
+        </div>
+        <div class="label-group">
+            <div>
+                <label>Endereço de Destino: ${item.cliente.endereco_destino.endereco || "Não disponível"}</label>
+               
+            </div>
+            <div>
+                <label>Bairro: ${item.cliente.endereco_destino.bairro || "Não disponível"}</label>
+                
+            </div>
+            <div>
+                <label>Cidade: ${item.cliente.endereco_destino.cidade || "Não disponível"}</label>
+                
+            </div>
+            <div>
+                <label>UF: ${item.cliente.endereco_destino.uf || "Não disponível"}</label>
+              
+            </div>
+        </div>
+    </div>
+
+   
+     <!-- Tabela de Itens -->
+    <div class="table-container">
+     
+        <table>
+            <!-- Cabeçalhos principais -->
+            <thead>
+                <tr>
+                    <th>QTD.</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>EP*</th>
+                    <th>VALOR R$</th>
+                    <th>QTD.</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>EP*</th>
+                    <th>VALOR R$</th>
+                    <th>QTD.</th>
+                    <th>DESCRIÇÃO</th>
+                    <th>EP*</th>
+                    <th>VALOR R$</th>
+                </tr>
+                <tr>
+                    <th colspan="4">ESTAR E JANTAR</th>
+                    <th colspan="4">DORMITÓRIO</th>
+                    <th colspan="4">ESCRITÓRIO</th>
+                </tr>
+                <tbody>
+                
+                    <!-- Linhas preenchidas com dados -->
+                    <tr >
+                        <td>1</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>2</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>3</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>4</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>5</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>6</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>7</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>8</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>9</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>10</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>11</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>12</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>13</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>14</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>15</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>16</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>17</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>18</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>19</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>20</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>21</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>22</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>23</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <th colspan="4" >DIVERSOS</th> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>24</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>25</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>26</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <th colspan="4" >COZINHA/ÁREA</th> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>27</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>28</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>29</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>30</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>31</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>32</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>33</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>34</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>35</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>36</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>37</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>38</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>39</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>40</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>41</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>42</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>43</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>44</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>45</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>46</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>47</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>48</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>49</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>50</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>51</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <th colspan="4" >OUTROS(ESPECIFICAR ABAIXO)</th> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>52</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>53</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>54</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <th colspan="4" >VEÍCULOS</th> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>55</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    <tr>
+                        <td>56</td> <td></td> <td></td> <td></td> <!-- 1* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 2* -->
+                        <td></td> <td></td> <td></td> <td></td> <!-- 3* -->
+                    </tr>
+                    
+                    
+                </tbody>
+            </thead>
+            
+    
+        </table>
+    </div>
+    
+    
+    <div class="Valores">
+        <div class="cont">
+        <h3>ESTADO DA PEÇA</h3>
+        <ul>
+            <li>1- Desmontado pelo cliente</li>
+            <li>2- Embalado pelo cliente</li>
+            <li>3- Amassado</li>
+        </ul>
+       <ul>
+            <li>4- Normal</li>
+            <li>5- Arranhado</li>
+            <li>6- Solto</li>
+        </ul>
+        </div>
+        <div class="end-t">
+       
+        <h3>VALOR TOTAL DECLARADO:</h3>  <h3 style=" border-bottom: solid black 1px;">R$ ${item.valor_total_declarado ? item.valor_total_declarado.toFixed(2) : "Não disponível"}</h3> 
+    
+   </div>
+   
+    </div>
+    <label class="h2">Observação</label>
+  
+
+    <!-- Observações -->
+
+    <div class="section">
+        
+        <div class="footer-note">
+        <p>O TRANSPORTADOR DEVERÁ PREENCHER ESTE FORMULÁRIO ANTES DO INÍCIO DO EMBARQUE.  EM CASO DE EVENTUAL SINISTRO, ESTE INVENTÁRIO SERÁ SOLICITADO PELA SEGURADORA.</p>
+      
+    </div>
+
+    <div class="signatures">
+        <div>
+            <label>Local e Data:</label>
+            
+        </div>
+        <div>
+            <label>Assinatura do Transportador:</label>
+           
+        </div>
+        <div>
+            <label>Assinatura do Cliente:</label>
+          
+        </div>
+    </div>
+
+    
+    
+</div>
+</body>
+</html>
+
+
+
+`;
+
+                        // Preencher a área de impressão
+                        const printableArea = document.getElementById('printable-area');
+                        printableArea.innerHTML = ``;
+                    } else {
+                        document.getElementById('item-info').innerHTML = `<h2>Item não encontrado.</h2>`;
+                    }
+                })
+                .catch(error => {
+                    document.getElementById('item-info').innerHTML = `<h2>Erro ao carregar os detalhes do item. Tente novamente mais tarde.</h2>`;
+                    console.error(error);
+                });
+        }
+    </script>
+</body>
+</html>
