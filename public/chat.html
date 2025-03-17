@@ -68,7 +68,11 @@
     </div>
 
     <script>
-        const socket = (io);
+
+        const socket = io({
+    transports: ["polling"]
+});
+
         const messagesDiv = document.getElementById("messages");
         const messageForm = document.getElementById("message-form");
         const messageInput = document.getElementById("message-input");
