@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
+        /* Reset básico para garantir uma aparência consistente em todos os navegadores */
         * {
             margin: 0;
             padding: 0;
@@ -22,28 +23,25 @@
             line-height: 1.6;
         }
 
+        /* Estilo do cabeçalho */
         header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 15px 20px;
+            padding: 20px;
             background-color: #222;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
-        .logo {
-            display: flex;
-            align-items: center;
+        .logo{
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
         }
 
-        .img-logo {
-            width: 150px;
-            height: 50px;
-            object-fit: contain;
-        }
-
-        nav {
-            display: flex;
+        .logo h1 {
+            color: white;
+            font-size: 24px;
         }
 
         nav ul {
@@ -58,9 +56,6 @@
             font-size: 16px;
             padding: 10px;
             transition: background-color 0.3s ease;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
 
         nav ul li a:hover {
@@ -68,6 +63,7 @@
             border-radius: 5px;
         }
 
+        /* Menu de navegação principal */
         .menu {
             display: flex;
             justify-content: center;
@@ -84,7 +80,6 @@
             border-radius: 5px;
             display: flex;
             align-items: center;
-            gap: 10px;
             transition: all 0.3s ease-in-out;
         }
 
@@ -93,6 +88,11 @@
             transform: translateY(-2px);
         }
 
+        .menu a i {
+            margin-right: 10px;
+        }
+
+        /* Estilo para telas pequenas */
         @media (max-width: 768px) {
             .menu {
                 flex-direction: column;
@@ -119,6 +119,12 @@
                 margin-bottom: 10px;
             }
         }
+
+        .img-logo{
+          width: 150px;
+          height: 50px;
+
+        }
     </style>
 </head>
 
@@ -130,8 +136,9 @@
         
         <nav>
             <ul>
-                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="index.html#contato"><i class="fas fa-user"></i> Contato</a></li>
+
+                <li><a href="index.html"><i class="fas fa-home"></i> <!-- Ícone de casa -->Home</a></li>
+                <li><a href="index.html#contato"><i class="fas fa-user"></i> <!-- Ícone de usuário -->Contato</a></li>
             </ul>
         </nav>
     </header>
@@ -143,5 +150,6 @@
             <a href="tests/clone.html"><i class="fas fa-clone"></i> Clone HTML</a>
         </div>
     </nav>
+
 </body>
 </html>
