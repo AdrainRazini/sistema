@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        /* Reset básico para garantir uma aparência consistente em todos os navegadores */
+        /* Reset básico */
         * {
             margin: 0;
             padding: 0;
@@ -17,38 +17,31 @@
         }
 
         body {
-    background-image: url(img/mercedes-980x490.png);
-    background-size: cover; /* Faz a imagem cobrir todo o fundo */
-    background-repeat: no-repeat; /* Impede a repetição */
-    background-position: center; /* Centraliza a imagem */
-    background-attachment: fixed; /* Mantém a imagem fixa no fundo */
-    font-family: 'Arial', sans-serif;
-    background-color: #f8f8f8;
-    color: #333;
-    line-height: 1.6;
-}
+            background-image: url(img/mercedes-980x490.png);
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-attachment: fixed;
+            font-family: 'Arial', sans-serif;
+            background-color: #f8f8f8;
+            color: #333;
+            line-height: 1.6;
+        }
 
-
-        /* Estilo do cabeçalho */
+        /* Cabeçalho */
         header {
             background: linear-gradient(90deg, #052455, #4364F7, #6FB1FC);
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 20px;
-            background-color: #222;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
         }
 
-        .logo{
-            width: 40px;
-            height: 40px;
-            margin-right: 10px;
-        }
-
-        .logo h1 {
-            color: white;
-            font-size: 24px;
+        .logo img {
+            width: 150px;
+            height: 50px;
         }
 
         nav ul {
@@ -70,7 +63,15 @@
             border-radius: 5px;
         }
 
-        /* Menu de navegação principal */
+        /* Menu Hambúrguer */
+        .menu-icon {
+            display: none;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Menu Principal */
         .menu {
             display: flex;
             justify-content: center;
@@ -100,65 +101,100 @@
             margin-right: 10px;
         }
 
-        /* Estilo para telas pequenas */
-        @media (max-width: 768px) {
-            .menu {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .menu a {
-                width: 100%;
-                text-align: center;
-                padding: 15px;
-                font-size: 16px;
-            }
-
-            h1 {
-                font-size: 28px;
-            }
-
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav ul li {
-                margin-bottom: 10px;
-            }
+        /* Estilos para o menu lateral */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: -250px;
+            width: 250px;
+            height: 100%;
+            background: #052455;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.5);
+            padding-top: 60px;
+            transition: 0.3s;
+            z-index: 1000;
         }
 
-        .img-logo{
-          width: 150px;
-          height: 50px;
+        .mobile-menu a {
+            display: block;
+            color: white;
+            text-decoration: none;
+            padding: 15px 20px;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
 
+        .mobile-menu a:hover {
+            background: #007bff;
+        }
+
+        .close-menu {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .menu {
+                display: none;
+            }
+
+            .menu-icon {
+                display: block;
+            }
         }
     </style>
 </head>
 
 <body>
+
     <header>
         <div class="logo">
-            <img class="img-logo" src="img/LOGO-1.avif" alt="Central de Projetos">
+            <img src="img/LOGO-1.avif" alt="Central de Projetos">
         </div>
         
         <nav>
             <ul>
-
-                <li><a href="index.html"><i class="fas fa-home"></i> <!-- Ícone de casa -->Home</a></li>
-                <li><a href="index.html#contato"><i class="fas fa-user"></i> <!-- Ícone de usuário -->Contato</a></li>
+                <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="index.html#contato"><i class="fas fa-user"></i> Contato</a></li>
             </ul>
         </nav>
-    </header>
-   
-    <nav>
-        <div class="menu">
-            <a href="#"><i class="fas fa-file"></i> Inventario</a>
-            <a href="chat.html"><i class="fas fa-comment"></i> Chat Message</a>
-            <a href="tests/3D Simulator.html"><i class="fas fa-cogs"></i> 3D Test</a>
-            <a href="tests/clone.html"><i class="fas fa-clone"></i> Clone HTML</a>
+
+        <!-- Ícone do Menu Hambúrguer -->
+        <div class="menu-icon" onclick="openMenu()">
+            <i class="fas fa-bars"></i>
         </div>
-    </nav>
+    </header>
+
+    <!-- Menu lateral para celulares -->
+    <div class="mobile-menu" id="mobileMenu">
+        <span class="close-menu" onclick="closeMenu()">&times;</span>
+        <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        <a href="index.html#contato"><i class="fas fa-user"></i> Contato</a>
+        <a href="#"><i class="fas fa-file"></i> Inventário</a>
+        <a href="chat.html"><i class="fas fa-comment"></i> Chat Message</a>
+        <a href="tests/3D Simulator.html"><i class="fas fa-cogs"></i> 3D Test</a>
+        <a href="tests/clone.html"><i class="fas fa-clone"></i> Clone HTML</a>
+    </div>
+
+    <script>
+        function openMenu() {
+            document.getElementById("mobileMenu").style.left = "0";
+        }
+
+        function closeMenu() {
+            document.getElementById("mobileMenu").style.left = "-250px";
+        }
+    </script>
 
 </body>
 </html>
