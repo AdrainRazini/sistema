@@ -225,8 +225,28 @@ footer {
         </div>
     </nav>
 
-   <section id="contato"> <img src="img/Contato.png" alt="" class="circulo" onclick="openModal('Transcotempo ', 'Transportes para Todo Brasil', 'img/Contato.png', 'https://api.whatsapp.com/send?phone=5541999671804&text=Ol%C3%A1,%20estou%20no%20site%20da%20TRANSCOTEMPO%20e%20gostaria%20de%20fazer%20uma%20cota%C3%A7%C3%A3o.')" style="cursor: pointer;" > </section>
-
+    <section id="contato" style="display: flex; justify-content: center; align-items: center; padding: 20px;">
+        <img 
+            src="img/Contato.png" 
+            alt="Entre em contato via WhatsApp" 
+            class="circulo contato-img" 
+            onclick="openModal('Transcotempo', 'Transportes para Todo Brasil', 'img/Contato.png', 'https://api.whatsapp.com/send?phone=5541999671804&text=Ol%C3%A1,%20estou%20no%20site%20da%20TRANSCOTEMPO%20e%20gostaria%20de%20fazer%20uma%20cota%C3%A7%C3%A3o.')" 
+            style="cursor: pointer;" 
+            aria-label="Clique para entrar em contato via WhatsApp"
+        >
+    </section>
+    
+    <style>
+        .contato-img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+    
+        .contato-img:hover {
+            transform: scale(1.1);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+    
   <!-- Modal de Detalhes do Projeto -->
   <div class="modal" id="modal">
     <div class="modal-content">
