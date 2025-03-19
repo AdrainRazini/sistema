@@ -2,54 +2,42 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const users = {}; // Armazena usuários logados
+const users = {}; // Objeto para armazenar usuários conectados
 
-// Configura a pasta pública para servir os arquivos HTML, CSS e JS
 app.use(express.static('public'));
 
-// Rota principal
-app.get('/', (req, res) => {
-  res.sendFile(__dirname + '/public/index.html');
-});
+io.on('connection', (socket) => {
+    console.log(`Novo usuário conectado: ${socket.id}`);
 
-// Evento de conexão do Socket.IO
-io.on("connection", (socket) => {
-    console.log("Novo usuário conectado:", socket.id);
-
-    // Login do usuário
-    socket.on("login", (username) => {
-        users[socket.id] = username; // Adiciona usuário
-        io.emit("updateUserList", Object.values(users)); // Atualiza lista
-        socket.emit("loginSuccess", username);
-        io.emit("userConnected", username);
-        console.log(`${username} entrou no chat.`);
+    // Quando um usuário faz login
+    socket.on('login', (username) => {
+        users[socket.id] = username;
+        io.emit('updateUserList', Object.values(users)); // Envia a lista de usuários online
     });
 
-    // Lida com mensagens de chat
-    socket.on("chatMessage", (msg) => {
+    // Mensagens do chat
+    socket.on('chatMessage', (message) => {
         const username = users[socket.id];
         if (username) {
-            io.emit("message", { user: username, text: msg });
+            io.emit('message', { user: username, text: message });
         }
     });
 
-    // Remove o usuário quando ele desconecta
-    socket.on("disconnect", () => {
+    // Quando um usuário se desconecta
+    socket.on('disconnect', () => {
         const username = users[socket.id];
-        if (username) {
-            delete users[socket.id];
-            io.emit("updateUserList", Object.values(users));
-            io.emit("userDisconnected", username);
-            console.log(`${username} saiu do chat.`);
-        }
+        delete users[socket.id];
+        io.emit('updateUserList', Object.values(users)); // Atualiza a lista de usuários online
+        console.log(`Usuário desconectado: ${socket.id}`);
     });
 });
 
 // Inicia o servidor
 server.listen(3000, () => {
-  console.log('Servidor rodando em http://localhost:3000');
+    console.log('Servidor rodando em http://localhost:3000');
 });
