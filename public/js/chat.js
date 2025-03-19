@@ -4,7 +4,7 @@ const socket = io();
 document.addEventListener('DOMContentLoaded', () => {
   const username = localStorage.getItem('username');
   if (!username) {
-    window.location.href = 'index.html';
+    window.location.href = 'login.html';
   } else {
     socket.emit('login', username);
   }
