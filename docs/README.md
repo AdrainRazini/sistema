@@ -4,13 +4,13 @@
 
 ---
 
-**URL do site em Vercel:** [sistema](https://sistema-gray.vercel.app/#)
+**URL do site em Vercel:** [sistema](https://sistema-gray.vercel.app/#)  Sistema de CHAT Não Funciona 
 
 ---
 
 ---
 
-**URL do site em Render:** [sistema](https://sistema-37du.onrender.com/)
+**URL do site em Render:** [sistema](https://sistema-37du.onrender.com/)  Sistema de CHAT Funciona
 
 ---
 
