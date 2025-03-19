@@ -1,34 +1,37 @@
-// public/chat.js
 const socket = io();
 
+// Verifica se o usuário já está logado
 document.addEventListener('DOMContentLoaded', () => {
-  const username = localStorage.getItem('username');
-  if (!username) {
-    window.location.href = 'login.html';
-  } else {
-    socket.emit('login', username);
-  }
+    const username = localStorage.getItem('username');
+    if (!username) {
+        window.location.href = 'login.html';
+    } else {
+        socket.emit('login', username);
+    }
 });
 
-socket.on('userConnected', (username) => {
-  document.getElementById('chat-box').innerHTML += `<p><strong>${username} entrou no chat.</strong></p>`;
+// Atualiza a lista de usuários online
+socket.on('updateUserList', (users) => {
+    const userList = document.getElementById('user-list');
+    userList.innerHTML = ""; // Limpa a lista
+    users.forEach(user => {
+        userList.innerHTML += `<li>${user}</li>`;
+    });
 });
 
+// Exibir mensagens do chat
 socket.on('message', (msg) => {
-  const chatBox = document.getElementById('chat-box');
-  chatBox.innerHTML += `<p><strong>${msg.user}:</strong> ${msg.text}</p>`;
-  chatBox.scrollTop = chatBox.scrollHeight;
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML += `<p><strong>${msg.user}:</strong> ${msg.text}</p>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
 });
 
-socket.on('userDisconnected', (username) => {
-  document.getElementById('chat-box').innerHTML += `<p><em>${username} saiu do chat.</em></p>`;
-});
-
+// Enviar mensagem
 function sendMessage() {
-  const messageInput = document.getElementById('message');
-  const message = messageInput.value;
-  if (message) {
-    socket.emit('chatMessage', message);
-    messageInput.value = '';
-  }
+    const messageInput = document.getElementById('message');
+    const message = messageInput.value.trim();
+    if (message) {
+        socket.emit('chatMessage', message);
+        messageInput.value = '';
+    }
 }
