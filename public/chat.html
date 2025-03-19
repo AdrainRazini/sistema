@@ -6,95 +6,107 @@
   <link rel="stylesheet" href="css/page.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    body {
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
         font-family: Arial, sans-serif;
-        background: #f0f2f5;
+    }
+
+    body {
+        background: #e5ddd5;
         display: flex;
         align-items: center;
         justify-content: center;
         height: 100vh;
-        margin: 0;
     }
-    
+
     #chat-container {
         width: 90%;
-        max-width: 450px;
-        background: white;
-        padding: 20px;
+        max-width: 400px;
+        background: #fff;
         border-radius: 10px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
         display: flex;
         flex-direction: column;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
-    h2 {
-        text-align: center;
-        color: #333;
+    /* Cabeçalho */
+    #chat-header {
+        background: #075e54;
+        color: white;
+        padding: 15px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
+    #chat-header img {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+    }
+
+    /* Chat Box */
     #chat-box {
-        height: 300px;
+        height: 400px;
         overflow-y: auto;
-        border: 1px solid #ddd;
         padding: 10px;
-        background: #fafafa;
-        border-radius: 5px;
+        background: #e5ddd5;
         display: flex;
         flex-direction: column;
         gap: 5px;
     }
 
+    /* Mensagens */
     .message {
         padding: 8px 12px;
-        border-radius: 8px;
+        border-radius: 10px;
         max-width: 70%;
         word-wrap: break-word;
+        margin: 5px 0;
     }
 
-    .user-message {
-        background: #28a745;
-        color: white;
+    .my-message {
+        background: #dcf8c6;
         align-self: flex-end;
     }
 
-    .system-message {
-        background: #ddd;
-        color: #333;
+    .other-message {
+        background: white;
         align-self: flex-start;
-        font-style: italic;
     }
 
+    /* Input */
     #message-form {
         display: flex;
-        margin-top: 10px;
+        padding: 10px;
+        background: #f0f0f0;
+        align-items: center;
         gap: 10px;
     }
 
     #message {
         flex: 1;
         padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 14px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        outline: none;
     }
 
     button {
-        padding: 10px 15px;
-        background: #28a745;
-        color: white;
+        background: #128c7e;
         border: none;
+        padding: 10px 15px;
+        color: white;
+        border-radius: 50%;
         cursor: pointer;
-        border-radius: 5px;
-        transition: background 0.3s;
+        transition: 0.3s;
     }
 
     button:hover {
-        background: #218838;
-    }
-
-    button:disabled {
-        background: #ccc;
-        cursor: not-allowed;
+        background: #0d7a65;
     }
 
   </style>
@@ -102,11 +114,19 @@
 <body>
 
   <div id="chat-container">
-    <h2>Chat</h2>
+    <!-- Cabeçalho do Chat -->
+    <div id="chat-header">
+      <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="Ícone">
+      <h3>Chat Online</h3>
+    </div>
+
+    <!-- Chat Box -->
     <div id="chat-box"></div>
+
+    <!-- Input -->
     <div id="message-form">
       <input type="text" id="message" placeholder="Digite sua mensagem..." oninput="toggleButton()">
-      <button id="sendBtn" onclick="sendMessage()" disabled>Enviar</button>
+      <button id="sendBtn" onclick="sendMessage()" disabled>➤</button>
     </div>
   </div>
 
@@ -127,17 +147,18 @@
     });
 
     socket.on("userConnected", (username) => {
-        chatBox.innerHTML += `<p class="system-message"><strong>${username} entrou no chat.</strong></p>`;
+        chatBox.innerHTML += `<p class="message other-message"><strong>${username} entrou no chat.</strong></p>`;
         scrollToBottom();
     });
 
     socket.on("message", (msg) => {
-        chatBox.innerHTML += `<p class="user-message"><strong>${msg.user}:</strong> ${msg.text}</p>`;
+        const messageClass = msg.user === localStorage.getItem("username") ? "my-message" : "other-message";
+        chatBox.innerHTML += `<p class="message ${messageClass}"><strong>${msg.user}:</strong> ${msg.text}</p>`;
         scrollToBottom();
     });
 
     socket.on("userDisconnected", (username) => {
-        chatBox.innerHTML += `<p class="system-message"><em>${username} saiu do chat.</em></p>`;
+        chatBox.innerHTML += `<p class="message other-message"><em>${username} saiu do chat.</em></p>`;
         scrollToBottom();
     });
 
