@@ -7,7 +7,22 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server);
 
-const users = {}; // Objeto para armazenar usuários conectados
+const users = [];
+
+io.on("connection", (socket) => {
+    socket.on("login", (username) => {
+        users.push({ id: socket.id, name: username, online: true });
+        io.emit("updateUserList", users);
+    });
+
+    socket.on("disconnect", () => {
+        const index = users.findIndex(user => user.id === socket.id);
+        if (index !== -1) {
+            users.splice(index, 1);
+            io.emit("updateUserList", users);
+        }
+    });
+});
 
 app.use(express.static('public'));
 
