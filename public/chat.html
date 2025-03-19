@@ -56,43 +56,16 @@
         }
     </style>
 </head>
-<body>
 
-    <div id="chat-container">
-        <h2>Central-Chat</h2>
-        <div id="messages"></div>
-        <form id="message-form">
-            <input type="text" id="message-input" placeholder="Digite sua mensagem..." autocomplete="off">
-            <button type="submit">Enviar</button>
-        </form>
-    </div>
-
-    <script>
-
-        const socket = io();
-
-        const messagesDiv = document.getElementById("messages");
-        const messageForm = document.getElementById("message-form");
-        const messageInput = document.getElementById("message-input");
-
-        // Enviar mensagem ao servidor
-        messageForm.addEventListener("submit", (event) => {
-            event.preventDefault();
-            const message = messageInput.value.trim();
-            if (message) {
-                socket.emit("chatMessage", message);
-                messageInput.value = "";
-            }
-        });
-
-        // Receber mensagens do servidor
-        socket.on("message", (data) => {
-            const messageElement = document.createElement("div");
-            messageElement.innerHTML = `<strong>${data.user}:</strong> ${data.text}`;
-            messagesDiv.appendChild(messageElement);
-            messagesDiv.scrollTop = messagesDiv.scrollHeight;
-        });
-    </script>
-
-</body>
+    <body>
+        <div id="chat-page">
+          <h2>Chat</h2>
+          <div id="chat-box"></div>
+          <input type="text" id="message" placeholder="Digite uma mensagem" />
+          <button onclick="sendMessage()">Enviar</button>
+        </div>
+      
+        <script src="/socket.io/socket.io.js"></script>
+        <script src="chat.js"></script>
+      </body>
 </html>

@@ -1,0 +1,28 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login-page">
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Nome de usuário" />
+    <button onclick="login()">Entrar no Chat</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value;
+      if (username) {
+        localStorage.setItem('username', username);
+        window.location.href = 'chat.html';
+      } else {
+        alert('Digite um nome de usuário');
+      }
+    }
+  </script>
+</body>
+</html>
