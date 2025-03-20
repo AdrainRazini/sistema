@@ -71,7 +71,7 @@
       <p><strong>Nome:</strong> <span id="user-name"></span></p>
       <p><strong>Email:</strong> <span id="user-email"></span></p>
     </div>
-    <button onclick="logout()">Sair</button>
+    <button onclick="Voltar()">Voltar</button>
   </div>
 
   <script>
@@ -84,6 +84,10 @@
       localStorage.removeItem('username');
       localStorage.removeItem('useremail');
       window.location.href = 'login.html';
+    }
+
+    function Voltar(){
+        window.location.href = 'index.html';
     }
   </script>
 </body>
