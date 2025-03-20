@@ -3,63 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script type="module">
-  // Importação das funções do Firebase
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js";
-  import { getAuth, signInAnonymously, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
-
-  // Configuração do Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyAR3cY_Qn6ecTb8uJYofFB5zuhL8ujRknA",
-    authDomain: "dados-de-teste-804a4.firebaseapp.com",
-    projectId: "dados-de-teste-804a4",
-    storageBucket: "dados-de-teste-804a4.appspot.com", // Corrigido o domínio do storage
-    messagingSenderId: "236456253874",
-    appId: "1:236456253874:web:7c5e84763f25822ded2cab",
-    measurementId: "G-FZ8JMHMWYJ"
-  };
-
-  // Inicializa Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-  const auth = getAuth(app);
-
-  // Função de login anônimo
-  function loginAnonimo() {
-    signInAnonymously(auth)
-      .then((userCredential) => {
-        console.log("Usuário logado anonimamente:", userCredential.user);
-      })
-      .catch((error) => {
-        console.error("Erro no login:", error.message);
-      });
-  }
-
-  // Função de login com e-mail e senha
-  function loginEmailSenha(email, senha) {
-    signInWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        console.log("Usuário logado:", userCredential.user);
-      })
-      .catch((error) => {
-        console.error("Erro no login:", error.message);
-      });
-  }
-
-  // Função para criar usuário com e-mail e senha
-  function criarUsuario(email, senha) {
-    createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        console.log("Usuário criado:", userCredential.user);
-      })
-      .catch((error) => {
-        console.error("Erro ao criar usuário:", error.message);
-      });
-  }
-</script>
-
-  
   <title>Login</title>
   <link rel="stylesheet" href="css/page.css">
   <style>
