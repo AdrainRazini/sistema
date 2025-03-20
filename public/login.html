@@ -65,35 +65,70 @@
     button:hover {
       background: #1eb14f;
     }
+
+    #error-message {
+      color: red;
+      margin-top: 10px;
+    }
   </style>
 </head>
 <body>
   <div id="login-page">
     <h2>Entrar no Chat</h2>
-    <input type="text" id="username" placeholder="Digite seu nome..." />
-    <input type="email" id="useremail" placeholder="Digite seu e-mail..." />
+    <input type="email" id="useremail" placeholder="Digite seu e-mail..." required />
+    <input type="password" id="password" placeholder="Digite sua senha..." required />
     <button onclick="login()">Entrar</button>
-    <button style="background-color: red;" onclick="Voltar()"> Voltar</button>
+    <button style="background-color: red;" onclick="voltar()">Voltar</button>
+    <p id="error-message"></p>
   </div>
 
-  <script>
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importação do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAR3cY_Qn6ecTb8uJYofFB5zuhL8ujRknA",
+      authDomain: "dados-de-teste-804a4.firebaseapp.com",
+      projectId: "dados-de-teste-804a4",
+      storageBucket: "dados-de-teste-804a4.appspot.com",
+      messagingSenderId: "236456253874",
+      appId: "1:236456253874:web:7c5e84763f25822ded2cab",
+      measurementId: "G-FZ8JMHMWYJ"
+    };
+
+    // Inicializando Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Função de login
     function login() {
-      const username = document.getElementById('username').value.trim();
-      const useremail = document.getElementById('useremail').value.trim();
-      
-      if (username.length > 0 && useremail.length > 0) {
-        localStorage.setItem('username', username);
-        localStorage.setItem('useremail', useremail);
-        window.location.href = 'chat.html';
-      } else {
-        alert('Digite um nome e um e-mail válidos!');
+      const email = document.getElementById("useremail").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const errorMessage = document.getElementById("error-message");
+
+      if (email === "" || password === "") {
+        errorMessage.textContent = "Preencha todos os campos!";
+        return;
       }
+
+      signInWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          localStorage.setItem("useremail", user.email);
+          window.location.href = "chat.html"; // Redireciona após login bem-sucedido
+        })
+        .catch((error) => {
+          errorMessage.textContent = "Erro: " + error.message;
+        });
     }
 
-function Voltar(){
-  window.location.href = 'index.html';
-}
-
+    // Função de voltar
+    function voltar() {
+      window.location.href = 'index.html';
+    }
   </script>
 </body>
 </html>
