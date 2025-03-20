@@ -84,11 +84,9 @@
 
   <!-- Firebase SDK -->
   <script type="module">
-    // Importação do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
-    // Configuração do Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAR3cY_Qn6ecTb8uJYofFB5zuhL8ujRknA",
       authDomain: "dados-de-teste-804a4.firebaseapp.com",
@@ -99,11 +97,9 @@
       measurementId: "G-FZ8JMHMWYJ"
     };
 
-    // Inicializando Firebase
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
 
-    // Função de login
     function login() {
       const email = document.getElementById("useremail").value.trim();
       const password = document.getElementById("password").value.trim();
@@ -118,17 +114,20 @@
         .then((userCredential) => {
           const user = userCredential.user;
           localStorage.setItem("useremail", user.email);
-          window.location.href = "chat.html"; // Redireciona após login bem-sucedido
+          window.location.href = "chat.html";
         })
         .catch((error) => {
           errorMessage.textContent = "Erro: " + error.message;
         });
     }
 
-    // Função de voltar
     function voltar() {
       window.location.href = 'index.html';
     }
+
+    // Disponibiliza a função no escopo global
+    window.login = login;
+    window.voltar = voltar;
   </script>
 </body>
 </html>
