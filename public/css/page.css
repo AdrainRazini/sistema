@@ -1,79 +1,23 @@
-/* ======= Estilos Globais ======= */
+/* public/style.css */
 body {
-  font-family: Arial, sans-serif;
-  background: #f4f4f4;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
-}
-
-/* ======= Contêiner Geral ======= */
-.container {
-  background: white;
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  width: 300px;
-}
-
-/* ======= Cabeçalhos ======= */
-h2 {
-  margin-bottom: 20px;
-  color: #128C7E;
-}
-
-/* ======= Campos de Entrada ======= */
-input, select, textarea {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 15px;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-/* ======= Botões ======= */
-button {
-  width: 100%;
-  padding: 10px;
-  background: #25D366;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-button:hover {
-  background: #1eb14f;
-}
-
-/* ======= Estilos da Página de Login e Chat ======= */
-#login-page, #chat-page {
-  text-align: center;
-}
-
-/* ======= Caixa de Chat ======= */
-#chat-box {
-  border: 1px solid #ccc;
-  width: 80%;
-  height: 300px;
-  overflow-y: auto;
-  margin: 20px auto;
-  padding: 10px;
-  background-color: #f9f9f9;
-}
-
-/* Responsividade */
-@media (max-width: 600px) {
-  .container {
-      width: 90%;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
   }
-
+  
+  #login-page, #chat-page {
+    text-align: center;
+  }
+  
   #chat-box {
-      width: 90%;
+    border: 1px solid #ccc;
+    width: 80%;
+    height: 300px;
+    overflow-y: auto;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f9f9f9;
   }
-}
+  
