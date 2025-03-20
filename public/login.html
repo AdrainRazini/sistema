@@ -73,6 +73,7 @@
     <input type="text" id="username" placeholder="Digite seu nome..." />
     <input type="email" id="useremail" placeholder="Digite seu e-mail..." />
     <button onclick="login()">Entrar</button>
+    <button style="background-color: red;" onclick="Voltar()"> Voltar</button>
   </div>
 
   <script>
@@ -88,6 +89,11 @@
         alert('Digite um nome e um e-mail válidos!');
       }
     }
+
+function Voltar(){
+  window.location.href = 'index.html';
+}
+
   </script>
 </body>
 </html>
