@@ -71,21 +71,17 @@
   <div id="login-page">
     <h2>Entrar no Chat</h2>
     <input type="text" id="username" placeholder="Digite seu nome..." />
-    <input type="email" id="useremail" placeholder="Digite seu e-mail..." />
     <button onclick="login()">Entrar</button>
   </div>
 
   <script>
     function login() {
       const username = document.getElementById('username').value.trim();
-      const useremail = document.getElementById('useremail').value.trim();
-      
-      if (username.length > 0 && useremail.length > 0) {
+      if (username.length > 0) {
         localStorage.setItem('username', username);
-        localStorage.setItem('useremail', useremail);
         window.location.href = 'chat.html';
       } else {
-        alert('Digite um nome e um e-mail válidos!');
+        alert('Digite um nome válido!');
       }
     }
   </script>
