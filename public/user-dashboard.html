@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central do Usuário</title>
+  <link rel="stylesheet" href="css/page.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #128C7E;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    #dashboard {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 350px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #128C7E;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .user-info {
+      background: #f4f4f4;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #D32F2F;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #b71c1c;
+    }
+  </style>
+</head>
+<body>
+  <div id="dashboard">
+    <h2>Central do Usuário</h2>
+    <div class="user-info">
+      <p><strong>Nome:</strong> <span id="user-name"></span></p>
+      <p><strong>Email:</strong> <span id="user-email"></span></p>
+    </div>
+    <button onclick="logout()">Sair</button>
+  </div>
+
+  <script>
+    // Recupera as informações do usuário
+    document.getElementById('user-name').innerText = localStorage.getItem('username') || "Não identificado";
+    document.getElementById('user-email').innerText = localStorage.getItem('useremail') || "Não identificado";
+
+    // Função de logout
+    function logout() {
+      localStorage.removeItem('username');
+      localStorage.removeItem('useremail');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>
