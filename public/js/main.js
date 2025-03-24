@@ -31,7 +31,7 @@ export function loginWithGoogle() {
       localStorage.setItem("userphoto", user.photoURL);
 
       // Redireciona para a página principal após login
-      window.location.href = "chat.html";
+      window.location.href = "user-dashboard.html";
     })
     .catch((error) => {
       console.error("Erro ao fazer login:", error);
