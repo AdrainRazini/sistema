@@ -83,6 +83,13 @@
     <button id="login-btn">Entrar</button>
     <button id="back-btn" class="back-btn">Voltar</button>
   </div>
+<button id="google-login">Entrar com Google</button>
+
+<script type="module">
+  import { loginWithGoogle } from "./js/main.js";
+
+  document.getElementById("google-login").addEventListener("click", loginWithGoogle);
+</script>
 
   <script src="js/main.js"></script>
 </body>
