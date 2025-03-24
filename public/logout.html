@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Logout</title>
     <link rel="stylesheet" href="css/page.css">
-    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js"></script>
     <script src="public/js/script.js"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -20,29 +18,9 @@
     </div>
 
     <script>
-        // Configuração do Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAwgWr5YiF9AHFqELcumQUf2tbLSDllTVY",
-            authDomain: "login-4a2eb.firebaseapp.com",
-            projectId: "login-4a2eb",
-            storageBucket: "login-4a2eb.appspot.com",
-            messagingSenderId: "515123551208",
-            appId: "1:515123551208:web:99cd4d8cd241eb0aa3225d",
-            measurementId: "G-D9JHW7EDG1"
-        };
-
-        // Inicializando o Firebase
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();  // Inicializa o serviço de autenticação
-
-        // Função de logout
         function logout() {
-            auth.signOut().then(() => {
-                localStorage.clear();  // Limpa o localStorage
-                window.location.href = "login.html";  // Redireciona para a página de login
-            }).catch((error) => {
-                console.error("Erro ao sair:", error);
-            });
+            localStorage.clear();
+            window.location.href = "login.html";
         }
     </script>
 </body>
