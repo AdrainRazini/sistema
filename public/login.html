@@ -65,37 +65,25 @@
     button:hover {
       background: #1eb14f;
     }
-  </style>
-  <script src="public/js/script.js"></script>
 
+    .back-btn {
+      background-color: red;
+    }
+
+    .back-btn:hover {
+      background-color: darkred;
+    }
+  </style>
 </head>
 <body>
   <div id="login-page">
     <h2>Entrar no Chat</h2>
     <input type="text" id="username" placeholder="Digite seu nome..." />
     <input type="email" id="useremail" placeholder="Digite seu e-mail..." />
-    <button onclick="login()">Entrar</button>
-    <button style="background-color: red;" onclick="Voltar()"> Voltar</button>
+    <button id="login-btn">Entrar</button>
+    <button id="back-btn" class="back-btn">Voltar</button>
   </div>
 
-  <script>
-    function login() {
-      const username = document.getElementById('username').value.trim();
-      const useremail = document.getElementById('useremail').value.trim();
-      
-      if (username.length > 0 && useremail.length > 0) {
-        localStorage.setItem('username', username);
-        localStorage.setItem('useremail', useremail);
-        window.location.href = 'chat.html';
-      } else {
-        alert('Digite um nome e um e-mail válidos!');
-      }
-    }
-
-function Voltar(){
-  window.location.href = 'index.html';
-}
-
-  </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
