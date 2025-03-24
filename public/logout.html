@@ -17,10 +17,31 @@
         <button onclick="window.location.href='index.html'">Cancelar</button>
     </div>
 
+    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js"></script>
     <script>
+        // Firebase config
+        const firebaseConfig = {
+            apiKey: "AIzaSyAwgWr5YiF9AHFqELcumQUf2tbLSDllTVY",
+            authDomain: "login-4a2eb.firebaseapp.com",
+            projectId: "login-4a2eb",
+            storageBucket: "login-4a2eb.appspot.com",
+            messagingSenderId: "515123551208",
+            appId: "1:515123551208:web:99cd4d8cd241eb0aa3225d",
+            measurementId: "G-D9JHW7EDG1"
+        };
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Logout function
         function logout() {
-            localStorage.clear();
-            window.location.href = "login.html";
+            auth.signOut().then(() => {
+                localStorage.clear();  // Clear localStorage
+                window.location.href = "login.html";  // Redirect to login page
+            }).catch((error) => {
+                console.error("Erro ao sair:", error);
+            });
         }
     </script>
 </body>
