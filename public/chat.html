@@ -28,12 +28,23 @@
     justify-content: center;
     height: 100vh;
   }
-
+  
   #login-page, #chat-page {
     text-align: center;
   }
+  
+  #chat-box {
+    border: 1px solid #ccc;
+    width: 80%;
+    height: 300px;
+    overflow-y: auto;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #f9f9f9;
+  }
+  
 
-  #chat-container {
+    #chat-container {
         width: 90%;
         max-width: 400px;
         background: #fff;
@@ -155,108 +166,15 @@
     button:hover {
         background: #0d527a;
     }
+
   </style>
+  <script src="public/js/script.js"></script>
 
-  <!-- Firebase -->
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/11.5.0/firebase-analytics.js"></script>
-  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyAwgWr5YiF9AHFqELcumQUf2tbLSDllTVY",
-      authDomain: "login-4a2eb.firebaseapp.com",
-      projectId: "login-4a2eb",
-      storageBucket: "login-4a2eb.appspot.com",
-      messagingSenderId: "515123551208",
-      appId: "1:515123551208:web:99cd4d8cd241eb0aa3225d",
-      measurementId: "G-D9JHW7EDG1"
-    };
-
-    const app = firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    // Função de login com Google
-    function loginWithGoogle() {
-      firebase.auth().signInWithPopup(provider)
-        .then((result) => {
-          const user = result.user;
-          localStorage.setItem("username", user.displayName);
-          localStorage.setItem("useremail", user.email);
-          localStorage.setItem("userphoto", user.photoURL);
-
-          // Redireciona para a página do chat
-          window.location.href = "#chat-container";
-        })
-        .catch((error) => {
-          console.error("Erro ao fazer login:", error);
-        });
-    }
-
-    // Socket.IO
-    const socket = io();
-    const messageInput = document.getElementById("message");
-    const sendBtn = document.getElementById("sendBtn");
-    const chatBox = document.getElementById("chat-box");
-    const usersDiv = document.getElementById("users");
-
-    document.addEventListener("DOMContentLoaded", () => {
-      const username = localStorage.getItem("username");
-      if (!username) {
-        window.location.href = "login.html";
-      } else {
-        socket.emit("login", username);
-      }
-    });
-
-    socket.on("updateUserList", (users) => {
-      usersDiv.innerHTML = "";
-      users.forEach(user => {
-        usersDiv.innerHTML += `
-          <div class="user">
-            <div class="status ${user.online ? 'online' : 'offline'}"></div>
-            <span>${user.name}</span>
-          </div>
-        `;
-      });
-    });
-
-    socket.on("message", (msg) => {
-      const messageClass = msg.user === localStorage.getItem("username") ? "my-message" : "other-message";
-      chatBox.innerHTML += `<p class="message ${messageClass}"><strong>${msg.user}:</strong> ${msg.text}</p>`;
-      scrollToBottom();
-    });
-
-    function sendMessage() {
-      const message = messageInput.value.trim();
-      if (message) {
-        socket.emit("chatMessage", message);
-        messageInput.value = "";
-        toggleButton();
-      }
-    }
-
-    function toggleButton() {
-      sendBtn.disabled = messageInput.value.trim() === "";
-    }
-
-    function scrollToBottom() {
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-  </script>
 </head>
 <body>
 
-  <!-- Página de login -->
-  <div id="login-page">
-    <h1>Login</h1>
-    <button onclick="loginWithGoogle()">Entrar com Google</button>
-  </div>
-
-  <!-- Chat -->
-  <div id="chat-container" style="display:none;">
+  <div id="chat-container">
+    <!-- Cabeçalho do Chat -->
     <div id="chat-header">
       <h3>Chat Online</h3>
     </div>
@@ -276,6 +194,58 @@
       <button id="sendBtn" onclick="sendMessage()" disabled>➤</button>
     </div>
   </div>
-  
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    const messageInput = document.getElementById("message");
+    const sendBtn = document.getElementById("sendBtn");
+    const chatBox = document.getElementById("chat-box");
+    const usersDiv = document.getElementById("users");
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const username = localStorage.getItem("username");
+        if (!username) {
+            window.location.href = "login.html";
+        } else {
+            socket.emit("login", username);
+        }
+    });
+
+    socket.on("updateUserList", (users) => {
+        usersDiv.innerHTML = "";
+        users.forEach(user => {
+            usersDiv.innerHTML += `
+                <div class="user">
+                    <div class="status ${user.online ? 'online' : 'offline'}"></div>
+                    <span>${user.name}</span>
+                </div>
+            `;
+        });
+    });
+
+    socket.on("message", (msg) => {
+        const messageClass = msg.user === localStorage.getItem("username") ? "my-message" : "other-message";
+        chatBox.innerHTML += `<p class="message ${messageClass}"><strong>${msg.user}:</strong> ${msg.text}</p>`;
+        scrollToBottom();
+    });
+
+    function sendMessage() {
+        const message = messageInput.value.trim();
+        if (message) {
+            socket.emit("chatMessage", message);
+            messageInput.value = "";
+            toggleButton();
+        }
+    }
+
+    function toggleButton() {
+        sendBtn.disabled = messageInput.value.trim() === "";
+    }
+
+    function scrollToBottom() {
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+  </script>
 </body>
 </html>
