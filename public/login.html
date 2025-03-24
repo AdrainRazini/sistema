@@ -78,16 +78,20 @@
 <body>
   <div id="login-page">
     <h2>Entrar no Chat</h2>
-<script type="module">
-  import { loginWithGoogle } from "./js/main.js";
-
-  document.getElementById("google-login").addEventListener("click", loginWithGoogle);
-</script>
-    <button id="back-btn" class="back-btn">Voltar</button>
+    
+    <!-- Botão Voltar -->
+    <button id="back-btn" class="back-btn" onclick="window.location.href='index.html'">Voltar</button>
+    
+    <!-- Botão de Login com Google -->
+    <button id="google-login">Entrar com Google</button>
   </div>
-<button id="google-login">Entrar com Google</button>
 
-
+  <script type="module">
+    import { loginWithGoogle } from "./js/main.js";
+    
+    // Adiciona o evento para o login com Google
+    document.getElementById("google-login").addEventListener("click", loginWithGoogle);
+  </script>
 
   <script src="js/main.js"></script>
 </body>
