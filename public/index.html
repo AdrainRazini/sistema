@@ -97,68 +97,91 @@ border-radius: 50%;
         }
 
         /* Menu de navegação principal */
-        .menu {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            padding: 20px;
-            background-color: white;
-        }
+.menu {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+    background-color: white;
+}
 
-        .menu a {
-            color: #001eff;
-            text-decoration: none;
-            font-size: 18px;
-            font-weight: 500;
-            padding: 12px 18px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            transition: all 0.3s ease-in-out;
-        }
+.menu a {
+    color: #001eff;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 12px 18px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    transition: all 0.3s ease-in-out;
+}
 
-        .menu a:hover {
-            background-color: #007bff;
-            transform: translateY(-2px);
-        }
+.menu a:hover {
+    background-color: #007bff;
+    transform: translateY(-2px);
+}
 
-        .menu a i {
-            margin-right: 10px;
-        }
+.menu a i {
+    margin-right: 10px;
+}
 
-        /* Estilo para telas pequenas */
-        @media (max-width: 768px) {
-            .menu {
-                flex-direction: column;
-                gap: 20px;
-            }
+/* Estilos para telas pequenas (celular e tablets) */
+@media (max-width: 768px) {
+    .menu {
+        flex-direction: column;
+        gap: 20px;
+        padding: 15px;
+    }
 
-            .menu a {
-                width: 100%;
-                text-align: center;
-                padding: 15px;
-                font-size: 16px;
-            }
+    .menu a {
+        width: 100%;
+        text-align: center;
+        font-size: 16px;
+        padding: 15px;
+    }
 
-            h1 {
-                font-size: 28px;
-            }
+    .img-logo {
+        width: 120px;
+        height: 40px;
+    }
+    
+    h1 {
+        font-size: 28px;
+    }
 
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
 
-            nav ul li {
-                margin-bottom: 10px;
-            }
-        }
+    nav ul li {
+        margin-bottom: 10px;
+    }
+}
 
-        .img-logo{
-          width: 150px;
-          height: 50px;
+/* Estilos para telas grandes (computadores e tablets maiores) */
+@media (min-width: 769px) {
+    .menu {
+        flex-direction: row;
+        justify-content: center;
+        gap: 30px;
+    }
 
-        }
+    .menu a {
+        font-size: 18px;
+        padding: 12px 18px;
+    }
+
+    .img-logo {
+        width: 150px;
+        height: 50px;
+    }
+
+    h1 {
+        font-size: 36px;
+    }
+}
 
 /* Estilo do Modal */
 #modal {
